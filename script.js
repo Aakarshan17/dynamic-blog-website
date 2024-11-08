@@ -48,22 +48,28 @@ document.addEventListener("DOMContentLoaded", function() {
             // add new post to posts array and update local storage
             posts.push(newPost);
             localStorage.setItem("posts", JSON.stringify(posts));
-
-            
             window.location.href = "index.html";
         });
     }
 
-    
     const postContainer = document.getElementById("post-container"); 
     if (postContainer) { 
         const urlParams = new URLSearchParams(window.location.search);
-        const postId = urlParams.get('id'); 
+        const postId = urlParams.get("id"); 
 
-        const postTitle = document.getElementById('post-title');
-        const postContent = document.getElementById('post-content');
-        const postImage = document.getElementById('post-image');
-        const editButton = document.getElementById('edit-button');
+        const postTitle = document.getElementById("post-title");
+        const postContent = document.getElementById("post-content");
+        const postImage = document.getElementById("post-image");
+        const editButton = document.getElementById("edit-button");
+        const deleteButton = document.getElementById("delete-button");
+
+        deleteButton.addEventListener("click", function() {
+            if (confirm("Are you sure you want to delete this post?")) {
+                posts.splice(postId, 1); // Remove the post from the array
+                localStorage.setItem("posts", JSON.stringify(posts)); // Update local storage
+                window.location.href = "index.html"; // Redirect to the homepage
+            }
+        });
 
         if (postId !== null) {
             const post = posts[postId]; 
@@ -71,40 +77,33 @@ document.addEventListener("DOMContentLoaded", function() {
             postContent.textContent = post.content;
             postImage.src = post.image; // Set the image source
 
-            editButton.addEventListener('click', function() {
-               
-                const titleInput = document.createElement('input');
-                titleInput.type = 'text';
+            editButton.addEventListener("click", function() {
+                const titleInput = document.createElement("input");
+                titleInput.type = "text";
                 titleInput.value = post.title; 
 
-                const contentTextarea = document.createElement('textarea');
+                const contentTextarea = document.createElement("textarea");
                 contentTextarea.value = post.content; 
 
-                
                 postTitle.replaceWith(titleInput); 
                 postContent.replaceWith(contentTextarea); 
 
-                
-                const saveButton = document.createElement('button');
-                saveButton.textContent = 'Save Changes';
+                const saveButton = document.createElement("button");
+                saveButton.textContent = "Save Changes";
 
-               
                 editButton.replaceWith(saveButton); 
 
-                saveButton.addEventListener('click', function() {
-                    
+                saveButton.addEventListener("click", function() {
                     post.title = titleInput.value;
                     post.content = contentTextarea.value;
 
                     // Update local storage with the modified post
                     localStorage.setItem("posts", JSON.stringify(posts));
 
-                   
                     titleInput.replaceWith(postTitle);  
                     contentTextarea.replaceWith(postContent); 
                     saveButton.replaceWith(editButton); 
 
-                    // Update the text content of the title and content elements
                     postTitle.textContent = post.title; 
                     postContent.textContent = post.content; 
                 });
