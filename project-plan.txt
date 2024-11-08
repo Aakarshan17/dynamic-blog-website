@@ -1,0 +1,5 @@
+Project Plan for the Blog WEbsite:
+- Homepage (index.html) will list all the blog posts
+- New Post (new-post.html) will allow users to create a new blog post
+- view/edit post (post.html) allows users to view edit or delete the blog post
+- JavaScript: it will handle the CRUD operations using local storage
